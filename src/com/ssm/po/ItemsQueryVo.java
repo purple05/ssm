@@ -1,10 +1,15 @@
 package com.ssm.po;
 
+import java.util.List;
+
 public class ItemsQueryVo {
 	// 商品信息
 	private Items items;
 	// 为了系统 可扩展性，对原始生成的po进行扩展
 	private ItemsCustom itemsCustom;
+	
+	private List<ItemsCustom> itemsList;
+	
 	public Items getItems() {
 		return items;
 	}
@@ -18,17 +23,26 @@ public class ItemsQueryVo {
 		this.itemsCustom = itemsCustom;
 	}
 	
+	
+	public List<ItemsCustom> getItemsList() {
+		return itemsList;
+	}
+	public void setItemsList(List<ItemsCustom> itemsList) {
+		this.itemsList = itemsList;
+	}
 	public ItemsQueryVo() {
 		// TODO Auto-generated constructor stub
 	}
-	public ItemsQueryVo(Items items, ItemsCustom itemsCustom) {
+	public ItemsQueryVo(Items items, ItemsCustom itemsCustom, List<ItemsCustom> itemsList) {
 		super();
 		this.items = items;
 		this.itemsCustom = itemsCustom;
+		this.itemsList = itemsList;
 	}
 	@Override
 	public String toString() {
-		return "ItemsQueryVo [items=" + items + ", itemsCustom=" + itemsCustom + "]";
+		return "ItemsQueryVo [items=" + items + ", itemsCustom=" + itemsCustom + ", itemsList=" + itemsList + "]";
 	}
+	
 	
 }

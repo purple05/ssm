@@ -12,6 +12,9 @@ public interface ItemsService {
 	
 	public void updateItems(Integer id,ItemsCustom itemsCustom) throws Exception;
 	
+	public void updateItems2(ItemsQueryVo itemsQueryVo) throws Exception;
+	
 	public void deleteItems(Integer[] items_id) throws Exception;
+	
 	
 }

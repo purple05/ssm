@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ssm.mapper.ItemsMapper">
+
+	<resultMap id="BaseResultMap" type="com.ssm.po.Items">
+		<id column="id" property="id" jdbcType="INTEGER" />
+		<result column="name" property="name" jdbcType="VARCHAR" />
+		<result column="price" property="price" jdbcType="REAL" />
+		<result column="pic" property="pic" jdbcType="VARCHAR" />
+		<result column="createtime" property="createtime" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<resultMap id="ResultMapWithBLOBs" type="com.ssm.po.Items"
+		extends="BaseResultMap">
+		<result column="detail" property="detail" jdbcType="LONGVARCHAR" />
+	</resultMap>
+
+	<sql id="Base_Column_List">
+		id, name, price, pic, createtime
+	</sql>
+	<sql id="Blob_Column_List">
+		detail
+	</sql>
+
+
+	<select id="selectByPrimaryKey" resultMap="ResultMapWithBLOBs"
+		parameterType="java.lang.Integer">
+		select
+		<include refid="Base_Column_List" />
+		,
+		<include refid="Blob_Column_List" />
+		from items
+		where id = #{id,jdbcType=INTEGER}
+	</select>
+
+	<update id="updateByPrimaryKeyWithBLOBs" parameterType="com.ssm.po.Items">
+		update items
+		set name = #{name,jdbcType=VARCHAR},
+		price = #{price,jdbcType=REAL},
+		pic = #{pic,jdbcType=VARCHAR},
+		createtime = #{createtime,jdbcType=TIMESTAMP},
+		detail = #{detail,jdbcType=LONGVARCHAR}
+		where id = #{id,jdbcType=INTEGER}
+	</update>
+	
+	
+	<sql id="Items_delete">
+		<if test="ids != null">
+			<foreach collection="ids" item="id" open="id IN (" close=")" separator=",">
+				#{id}
+			</foreach>
+		</if>
+	</sql>
+	<delete id="deleteItems" parameterType="com.ssm.po.ItemsDeleteVo">
+		delete from items 
+		<where>
+			<include refid="Items_delete"/>
+		</where>
+	</delete>
+	
+	
+	<!-- 批量修改 -->
+	<!-- <sql id="Items_update">
+		<if test="itemsList != null">
+			<foreach collection="itemsList" item="items" open="values " close=";" separator=",">
+				(#{items.id},#{items.name},#{items.price},#{items.detail},#{items.createtime})
+			</foreach>
+		</if>	
+	</sql>
+	
+	<update id="updateItems2">
+		replace into items (id,name,price,detail,createtime)
+		<include refid="Items_update"/>
+	</update> -->
+	
+	
+	<sql id="Items_update2">
+		<if test="itemsList != null">
+			<foreach collection="itemsList" item="items" open="name = CASE id" close="END," separator=" ">
+				when #{items.id} then #{items.name}
+			</foreach>
+			
+			<foreach collection="itemsList" item="items" open="price = CASE id" close="END," separator=" ">
+				when #{items.id} then #{items.price}
+			</foreach>
+			
+			<foreach collection="itemsList" item="items" open="detail = CASE id" close="END," separator=" ">
+				when #{items.id} then #{items.detail}
+			</foreach>
+			
+			<foreach collection="itemsList" item="items" open="createtime = CASE id" close="END" separator=" ">
+				when #{items.id} then #{items.createtime}
+			</foreach>
+			
+			<foreach collection="itemsList" item="items" open="WHERE id IN (" close=")" separator=",">
+				#{items.id}
+			</foreach>
+			
+		</if>
+	</sql>
+	
+	<update id="updateItems2">
+		update items SET 
+		<include refid="Items_update2"></include>
+	</update> 
+
+</mapper>

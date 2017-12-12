@@ -70,4 +70,10 @@ public class ItemsServiceImpl implements ItemsService {
 		
 	}
 
+	@Override
+	public void updateItems2(ItemsQueryVo itemsQueryVo) throws Exception {
+		itemsMapper.updateItems2(itemsQueryVo);
+		
+	}
+
 }
