@@ -61,7 +61,7 @@ public class ItemsController {
 //		文件上传处理
 		String OriginalFilename = items_pic.getOriginalFilename();
 		
-		System.out.println(OriginalFilename);
+		
 		if(items_pic != null && OriginalFilename != null && OriginalFilename.length()>0 ){
 			
 			String pic_path = "E:/img_up/";
